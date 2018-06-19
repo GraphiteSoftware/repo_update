@@ -16,13 +16,16 @@ popd () {
     command popd "$@" > /dev/null
 }
 
-pushd $ANDROOT/.repo/local_manifests
-git pull
-popd
+#pushd $ANDROOT/.repo/local_manifests
+#git pull
+#popd
 
-if [ "$SKIP_SYNC" != "TRUE" ]; then
-    repo sync -j8 --current-branch --no-tags
-fi
+#if [ "$SKIP_SYNC" != "TRUE" ]; then
+#    repo sync -j8 --current-branch --no-tags
+#fi
+
+set -e
+set -x
 
 pushd $ANDROOT/bionic
 LINK=$HTTP && LINK+="://android.googlesource.com/platform/bionic"
@@ -119,3 +122,6 @@ pushd $ANDROOT/system/vold
 LINK=$HTTP && LINK+="://android.googlesource.com/platform/system/vold"
 git fetch $LINK refs/changes/24/703124/1 && git cherry-pick FETCH_HEAD
 popd
+
+set +e
+set +x
